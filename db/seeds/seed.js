@@ -1,4 +1,6 @@
 const db = require("../connection");
+const format = require("pg-format");
+const { convertTimestampToDate } = require("../seeds/utils");
 
 const seed = ({ topicData, userData, articleData, commentData }) => {
   return db
@@ -51,9 +53,51 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
         body TEXT,
         votes INT DEFAULT 0,
         author VARCHAR(300) REFERENCES users(username),
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
   `);
+    })
+    .then(() => {
+      const formattedTopics = topicData.map(
+        ({ description, slug, img_url }) => [description, slug, img_url]
+      );
+      const insertTopics = format(
+        `INSERT INTO topics (description,slug,img_url) VALUES %L;`,
+        formattedTopics
+      );
+      return db.query(insertTopics);
+    })
+    .then(() => {
+      const formattedUsers = userData.map(({ username, name, avatar_url }) => [
+        username,
+        name,
+        avatar_url,
+      ]);
+      const insertUsers = format(
+        `INSERT INTO users (username,name,avatar_url) VALUES %L;`,
+        formattedUsers
+      );
+      return db.query(insertUsers);
+    })
+    .then(() => {
+      const formattedArticles = articleData
+        .map(convertTimestampToDate)
+        .map(
+          ({
+            title,
+            topic,
+            author,
+            body,
+            created_at,
+            votes,
+            article_img_url,
+          }) => [title, topic, author, body, created_at, votes, article_img_url]
+        );
+      const insertArticles = format(
+        `INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L;`,
+        formattedArticles
+      );
+      return db.query(insertArticles);
     });
 };
 module.exports = seed;
