@@ -97,6 +97,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
         `INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L;`,
         formattedArticles
       );
+      console.log(insertArticles);
       return db.query(insertArticles);
     });
 };
