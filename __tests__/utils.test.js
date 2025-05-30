@@ -38,7 +38,7 @@ describe("convertTimestampToDate", () => {
     expect(result).toEqual(expected);
   });
 });
-describe.only("createLookupObject", () => {
+describe("createLookupObject", () => {
   test("returns an empty object when passed an empty array", () => {
     expect(createLookupObject([])).toEqual({});
   });

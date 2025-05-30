@@ -1,6 +1,9 @@
 const db = require("../connection");
 const format = require("pg-format");
-const { convertTimestampToDate } = require("../seeds/utils");
+const {
+  convertTimestampToDate,
+  createLookupObject,
+} = require("../seeds/utils");
 
 const seed = ({ topicData, userData, articleData, commentData }) => {
   return db
@@ -94,11 +97,32 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
           }) => [title, topic, author, body, created_at, votes, article_img_url]
         );
       const insertArticles = format(
-        `INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L;`,
+        `INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L RETURNING *;`,
         formattedArticles
       );
-      console.log(insertArticles);
       return db.query(insertArticles);
+    })
+    .then((res) => {
+      const articleIdLookup = createLookupObject(
+        res.rows,
+        "author",
+        "article_id"
+      );
+      console.log(articleIdLookup);
+      const formatedComments = commentData
+        .map(convertTimestampToDate)
+        .map(({ body, votes, author, created_at }) => [
+          body,
+          votes,
+          author,
+          created_at,
+          articleIdLookup.author,
+        ]);
+      const insertComments = format(
+        `INSERT INTO comments (body, votes, author, created_at, article_id) VALUES %L;`,
+        formatedComments
+      );
+      return db.query(insertComments);
     });
 };
 module.exports = seed;
