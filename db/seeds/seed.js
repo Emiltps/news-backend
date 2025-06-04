@@ -59,7 +59,6 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
         "author",
         "article_id"
       );
-      console.log(articleIdLookup);
       const formatedComments = commentData
         .map(convertTimestampToDate)
         .map(({ body, votes, author, created_at }) => [
@@ -67,7 +66,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
           votes,
           author,
           created_at,
-          articleIdLookup.author,
+          articleIdLookup[author],
         ]);
       const insertComments = format(
         `INSERT INTO comments (body, votes, author, created_at, article_id) VALUES %L;`,
