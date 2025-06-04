@@ -38,4 +38,25 @@ describe("app tests", () => {
         });
     });
   });
+  describe("Get /api/topics", () => {
+    test("200: Responds with an object with key articles that contains an array with specified properties ", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body }) => {
+          expect(typeof body).toBe("object");
+          expect(body.articles.length).not.toBe(0);
+          body.articles.forEach((article) => {
+            expect(typeof article.author).toBe("string");
+            expect(typeof article.title).toBe("string");
+            expect(typeof article.article_id).toBe("number");
+            expect(typeof article.created_at).toBe("string");
+            expect(typeof article.votes).toBe("number");
+            expect(article.body).toBe(undefined);
+            expect(typeof article.article_img_url).toBe("string");
+            expect(typeof article.comment_count).toBe("string");
+          });
+        });
+    });
+  });
 });

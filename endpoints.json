@@ -3,14 +3,14 @@
     "description": "serves up a json representation of all the available endpoints of the api"
   },
   "GET /api/topics": {
-    "description": "serves an json representation with the key of topics and the value of an array of topic objects.",
+    "description": "serves a json representation with the key of topics and the value of an array of topic objects.",
     "queries": [],
     "exampleResponse": {
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
   "GET /api/articles": {
-    "description": "serves an array of all articles",
+    "description": "serves a json representation with the key of articles and the value of an array of article objects.",
     "exampleResponse": {
       "articles": [
         {
