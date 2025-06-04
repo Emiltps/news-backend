@@ -11,14 +11,31 @@ beforeEach(() => {
 afterAll(() => {
   return db.end();
 });
-
-describe("GET /api", () => {
-  test("200: Responds with an object detailing the documentation for each endpoint", () => {
-    return request(app)
-      .get("/api")
-      .expect(200)
-      .then(({ body: { endpoints } }) => {
-        expect(endpoints).toEqual(endpointsJson);
-      });
+describe("app tests", () => {
+  describe("GET /api", () => {
+    test("200: Responds with an object detailing the documentation for each endpoint", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body: { endpoints } }) => {
+          expect(endpoints).toEqual(endpointsJson);
+        });
+    });
+  });
+  describe("Get /api/topics", () => {
+    test("200: Responds with an object with key topic that contains an array with slug, description and topic properties ", () => {
+      return request(app)
+        .get("/api/topics")
+        .expect(200)
+        .then(({ body }) => {
+          expect(typeof body).toBe("object");
+          expect(body.topics.length).not.toBe(0);
+          body.topics.forEach((topic) => {
+            expect(typeof topic.slug).toBe("string");
+            expect(typeof topic.description).toBe("string");
+            expect(typeof topic.img_url).toBe("string");
+          });
+        });
+    });
   });
 });
