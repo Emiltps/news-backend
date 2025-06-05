@@ -23,5 +23,17 @@
         }
       ]
     }
+  },
+  "GET /api/users": {
+    "description": "serves a json representation with the key of users and the value of an array of user objects.",
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "butter_bridge",
+          "name": "jonny",
+          "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+        }
+      ]
+    }
   }
 }
