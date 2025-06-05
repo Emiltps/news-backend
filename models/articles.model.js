@@ -16,6 +16,9 @@ FROM articles
 ORDER BY created_at`
     )
     .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "not found" });
+      }
       const articles = rows;
       return articles;
     });
