@@ -38,7 +38,7 @@ describe("app tests", () => {
         });
     });
   });
-  describe("Get /api/topics", () => {
+  describe("Get /api/articles", () => {
     test("200: Responds with an object with key articles that contains an array with specified properties ", () => {
       return request(app)
         .get("/api/articles")
@@ -56,6 +56,38 @@ describe("app tests", () => {
             expect(typeof article.article_img_url).toBe("string");
             expect(typeof article.comment_count).toBe("string");
           });
+        });
+    });
+    test("200: Responds with an object with the key of article and the value of an article object for given id", () => {
+      return request(app)
+        .get("/api/articles/8")
+        .expect(200)
+        .then(({ body }) => {
+          const article = body.article;
+          expect(typeof body).toBe("object");
+          expect(typeof article.author).toBe("string");
+          expect(typeof article.title).toBe("string");
+          expect(article.article_id).toBe(8);
+          expect(typeof article.created_at).toBe("string");
+          expect(typeof article.votes).toBe("number");
+          expect(typeof article.body).toBe("string");
+          expect(typeof article.article_img_url).toBe("string");
+        });
+    });
+    test("404: Responds with error if article doesn't exist", () => {
+      return request(app)
+        .get("/api/articles/800")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("not found");
+        });
+    });
+    test("400: Responds with error if id is not valid", () => {
+      return request(app)
+        .get("/api/articles/hello")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("bad request");
         });
     });
   });

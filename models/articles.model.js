@@ -23,3 +23,20 @@ ORDER BY created_at`
       return articles;
     });
 };
+
+exports.fetchArticleById = (article_id) => {
+  return db
+    .query(
+      `SELECT * FROM articles 
+    WHERE articles.article_id = $1`,
+      [article_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "not found" });
+      }
+
+      const articleById = rows[0];
+      return articleById;
+    });
+};

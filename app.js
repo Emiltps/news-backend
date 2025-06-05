@@ -2,7 +2,10 @@ const express = require("express");
 const app = express();
 const { getEndpoints } = require("./controllers/api.controller");
 const { getTopics } = require("./controllers/topics.controller");
-const { getArticles } = require("./controllers/articles.controller");
+const {
+  getArticles,
+  getArticlesById,
+} = require("./controllers/articles.controller");
 const { getUsers } = require("./controllers/users.controller");
 const {
   handlePostgresErrors,
@@ -17,6 +20,8 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);
 
 app.get("/api/users", getUsers);
+
+app.get("/api/articles/:article_id", getArticlesById);
 
 app.use(handlePostgresErrors);
 
