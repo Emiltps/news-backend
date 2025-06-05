@@ -82,12 +82,31 @@ describe("app tests", () => {
           expect(body.msg).toBe("not found");
         });
     });
+
     test("400: Responds with error if id is not valid", () => {
       return request(app)
         .get("/api/articles/hello")
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("bad request");
+        });
+    });
+    test("200: Responds with an object with the key of comments and the value of an array of comments for the given article_id", () => {
+      return request(app)
+        .get("/api/articles/13/comments")
+        .expect(200)
+        .then(({ body }) => {
+          const { comments } = body;
+
+          expect(comments.length).not.toBe(0);
+          comments.forEach((comment) => {
+            expect(typeof comment.comment_id).toBe("number");
+            expect(typeof comment.votes).toBe("number");
+            expect(typeof comment.created_at).toBe("string");
+            expect(typeof comment.author).toBe("string");
+            expect(typeof comment.body).toBe("string");
+            expect(comment.article_id).toBe(13);
+          });
         });
     });
   });
