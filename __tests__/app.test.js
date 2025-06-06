@@ -109,6 +109,14 @@ describe("app tests", () => {
           });
         });
     });
+    test("404: Responds with error if article doesn't exist", () => {
+      return request(app)
+        .get("/api/articles/800/comments")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("not found");
+        });
+    });
   });
   describe("Get /api/users", () => {
     test("200: Responds with an object with key users that contains an array of user objects ", () => {
