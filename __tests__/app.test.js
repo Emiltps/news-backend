@@ -117,6 +117,39 @@ describe("app tests", () => {
           expect(body.msg).toBe("not found");
         });
     });
+    test("201: POST responds with posted comment and adds a comment to the article", () => {
+      return request(app)
+        .post("/api/articles/13/comments")
+        .send({
+          username: "butter_bridge",
+          body: "Test comment to be posted on article 13",
+        })
+        .expect(201)
+        .then(({ body }) => {
+          const comment = body.comment;
+          expect(comment).toHaveProperty("comment_id");
+          expect(comment).toHaveProperty("article_id", 13);
+          expect(comment).toHaveProperty("author", "butter_bridge");
+          expect(comment).toHaveProperty(
+            "body",
+            "Test comment to be posted on article 13"
+          );
+          expect(comment).toHaveProperty("created_at");
+          expect(comment).toHaveProperty("votes", 0);
+        });
+    });
+    test("201: POST responds with error 404 if article ID invalid", () => {
+      return request(app)
+        .post("/api/articles/130/comments")
+        .send({
+          username: "butter_bridge",
+          body: "Test comment to be posted on article 13",
+        })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("not found");
+        });
+    });
   });
   describe("Get /api/users", () => {
     test("200: Responds with an object with key users that contains an array of user objects ", () => {

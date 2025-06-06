@@ -13,3 +13,16 @@ exports.fetchCommentsByArticleId = async (article_id) => {
   );
   return result.rows;
 };
+
+exports.createCommentsByArticleId = async (article_id, username, body) => {
+  await checkExists("articles", "article_id", article_id);
+
+  const result = await db.query(
+    `INSERT INTO comments (author, body, article_id)
+     VALUES ($1, $2, $3)
+     RETURNING *;`,
+    [username, body, article_id]
+  );
+
+  return result.rows[0];
+};

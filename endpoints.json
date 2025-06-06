@@ -39,7 +39,7 @@
       }
     }
   },
-  "/api/articles/:article_id/comments": {
+  "GET /api/articles/:article_id/comments": {
     "description": "serves a json representation with the key of comments and the value of an array of comments with given id",
     "exampleResponse": {
       "article": {
@@ -54,6 +54,13 @@
           "article_img_url": "https://images.pexels.com/photos/2403392/pexels-photo-2403392.jpeg?w=700&h=700"
         }
       }
+    }
+  },
+  "POST  /api/articles/:article_id/comments": {
+    "description": "adds a comment with properties body and username",
+    "exampleResponse": {
+      "username": "John_Doe",
+      "body": "This is an example of what John Doe might say"
     }
   },
   "GET /api/users": {

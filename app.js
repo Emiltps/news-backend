@@ -13,7 +13,9 @@ const {
   handleServerErrors,
 } = require("./errors");
 
-const { getCommentsByArticleId } = require("./controllers/comments.controller");
+const { getCommentsByArticleId , postCommentsByArticleId } = require("./controllers/comments.controller");
+
+app.use(express.json());
 
 app.get("/api", getEndpoints);
 
@@ -26,6 +28,8 @@ app.get("/api/users", getUsers);
 app.get("/api/articles/:article_id", getArticlesById);
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
+
+app.post("/api/articles/:article_id/comments", postCommentsByArticleId)
 
 app.use(handlePostgresErrors);
 
