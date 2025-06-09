@@ -167,4 +167,31 @@ describe("app tests", () => {
         });
     });
   });
+  describe("PATCH /api/articles/:article_id", () => {
+    test("200:Responds with updated votes ", () => {
+      return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes: -64 })
+        .expect(200)
+        .then(({ body }) => {
+          const article = body.article;
+          expect(typeof article.author).toBe("string");
+          expect(typeof article.title).toBe("string");
+          expect(article.article_id).toBe(1);
+          expect(typeof article.created_at).toBe("string");
+          expect(article.votes).toBe(36);
+          expect(typeof article.body).toBe("string");
+          expect(typeof article.article_img_url).toBe("string");
+        });
+    });
+    test("404: Responds with error if article doesn't exist", () => {
+      return request(app)
+        .patch("/api/articles/1000")
+        .send({ inc_votes: -64 })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("not found");
+        });
+    });
+  });
 });

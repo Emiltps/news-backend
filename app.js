@@ -5,6 +5,7 @@ const { getTopics } = require("./controllers/topics.controller");
 const {
   getArticles,
   getArticlesById,
+  updateArticleVotesById,
 } = require("./controllers/articles.controller");
 const { getUsers } = require("./controllers/users.controller");
 const {
@@ -13,7 +14,10 @@ const {
   handleServerErrors,
 } = require("./errors");
 
-const { getCommentsByArticleId , postCommentsByArticleId } = require("./controllers/comments.controller");
+const {
+  getCommentsByArticleId,
+  postCommentsByArticleId,
+} = require("./controllers/comments.controller");
 
 app.use(express.json());
 
@@ -29,7 +33,9 @@ app.get("/api/articles/:article_id", getArticlesById);
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
-app.post("/api/articles/:article_id/comments", postCommentsByArticleId)
+app.post("/api/articles/:article_id/comments", postCommentsByArticleId);
+
+app.patch("/api/articles/:article_id", updateArticleVotesById);
 
 app.use(handlePostgresErrors);
 

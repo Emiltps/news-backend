@@ -74,5 +74,9 @@
         }
       ]
     }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "Updates an article by article_id.",
+    "exampleResponse": { "inc_votes": 12 }
   }
 }
