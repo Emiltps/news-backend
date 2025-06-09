@@ -1,6 +1,20 @@
 const db = require("../db/connection");
-exports.fetchArticles = () => {
-  return db
+exports.fetchArticles = async (sort_by = "created_at", order = "desc") => {
+  const validSortColumns = [
+    "article_id",
+    "title",
+    "topic",
+    "author",
+    "created_at",
+    "votes",
+    "article_img_url",
+    "comment_count",
+  ];
+  const validOrders = ["asc", "desc"];
+  if (!validSortColumns.includes(sort_by) || !validOrders.includes(order)) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
+  return await db
     .query(
       `SELECT 
   article_id,
@@ -13,7 +27,7 @@ exports.fetchArticles = () => {
   (SELECT COUNT (*) FROM comments
   WHERE comments.article_id = articles.article_id) AS comment_count
 FROM articles
-ORDER BY created_at`
+ORDER BY ${sort_by} ${order.toUpperCase()}`
     )
     .then(({ rows }) => {
       if (!rows.length) {

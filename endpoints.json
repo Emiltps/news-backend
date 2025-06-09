@@ -10,7 +10,7 @@
     }
   },
   "GET /api/articles": {
-    "description": "serves a json representation with the key of articles and the value of an array of article objects.",
+    "description": "serves a json representation with the key of articles and the value of an array of article objects. Accepts queries ( e.g /api/articles?sort_by=title&order=asc) : sort_by ( valid column, default 'created_at'), order ('asc' or 'desc', default 'desc')",
     "exampleResponse": {
       "articles": [
         {

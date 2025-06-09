@@ -4,6 +4,7 @@ const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data");
 const app = require("../app");
 const request = require("supertest");
+const { toBeSortedBy } = require("jest-sorted");
 
 beforeEach(() => {
   return seed(data);
@@ -56,6 +57,22 @@ describe("app tests", () => {
             expect(typeof article.article_img_url).toBe("string");
             expect(typeof article.comment_count).toBe("string");
           });
+        });
+    });
+    test("200: sorts articles by title ascending", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order=asc")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.articles).toBeSortedBy("title", { ascending: true });
+        });
+    });
+    test("400: responds with error for invalid sort_by", () => {
+      return request(app)
+        .get("/api/articles?sort_by=not_a_column")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("bad request");
         });
     });
     test("200: Responds with an object with the key of article and the value of an article object for given id", () => {
