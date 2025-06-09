@@ -105,6 +105,7 @@ describe("app tests", () => {
           expect(typeof body).toBe("object");
           expect(typeof article.author).toBe("string");
           expect(typeof article.title).toBe("string");
+          expect(article.comment_count).toBe("0");
           expect(article.article_id).toBe(8);
           expect(typeof article.created_at).toBe("string");
           expect(typeof article.votes).toBe("number");

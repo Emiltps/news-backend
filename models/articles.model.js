@@ -52,7 +52,11 @@ FROM articles`;
 exports.fetchArticleById = (article_id) => {
   return db
     .query(
-      `SELECT * FROM articles 
+      `SELECT articles.*,
+        (SELECT COUNT (*) 
+        FROM comments
+  WHERE comments.article_id = articles.article_id) AS comment_count
+  FROM articles
     WHERE articles.article_id = $1`,
       [article_id]
     )
