@@ -75,6 +75,27 @@ describe("app tests", () => {
           expect(body.msg).toBe("bad request");
         });
     });
+
+    test("200: filters by topic", () => {
+      return request(app)
+        .get("/api/articles?topic=cats")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.articles.length).toBeGreaterThan(0);
+          body.articles.forEach((article) => {
+            expect(article.topic).toBe("cats");
+          });
+        });
+    });
+
+    test("404: Responds with error if it does not exist", () => {
+      return request(app)
+        .get("/api/articles?topic=swimming")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("not found");
+        });
+    });
     test("200: Responds with an object with the key of article and the value of an article object for given id", () => {
       return request(app)
         .get("/api/articles/8")

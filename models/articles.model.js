@@ -1,5 +1,9 @@
 const db = require("../db/connection");
-exports.fetchArticles = async (sort_by = "created_at", order = "desc") => {
+exports.fetchArticles = async (
+  sort_by = "created_at",
+  order = "desc",
+  topic
+) => {
   const validSortColumns = [
     "article_id",
     "title",
@@ -14,9 +18,7 @@ exports.fetchArticles = async (sort_by = "created_at", order = "desc") => {
   if (!validSortColumns.includes(sort_by) || !validOrders.includes(order)) {
     return Promise.reject({ status: 400, msg: "bad request" });
   }
-  return await db
-    .query(
-      `SELECT 
+  let queryString = `SELECT 
   article_id,
   title,
   topic,
@@ -26,16 +28,25 @@ exports.fetchArticles = async (sort_by = "created_at", order = "desc") => {
   article_img_url,
   (SELECT COUNT (*) FROM comments
   WHERE comments.article_id = articles.article_id) AS comment_count
-FROM articles
-ORDER BY ${sort_by} ${order.toUpperCase()}`
-    )
-    .then(({ rows }) => {
+FROM articles`;
+  if (topic) {
+    queryString += ` WHERE topic = $1 ORDER BY ${sort_by} ${order.toUpperCase()}`;
+    return await db.query(queryString, [topic]).then(({ rows }) => {
       if (!rows.length) {
         return Promise.reject({ status: 404, msg: "not found" });
       }
       const articles = rows;
       return articles;
     });
+  }
+  queryString += ` ORDER BY ${sort_by} ${order.toUpperCase()}`;
+  return await db.query(queryString).then(({ rows }) => {
+    if (!rows.length) {
+      return Promise.reject({ status: 404, msg: "not found" });
+    }
+    const articles = rows;
+    return articles;
+  });
 };
 
 exports.fetchArticleById = (article_id) => {
