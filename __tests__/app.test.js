@@ -194,4 +194,22 @@ describe("app tests", () => {
         });
     });
   });
+  describe("DELETE /api/comments/:comment_id", () => {
+    test("204: Responds with no content and deletes the given comment", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then(({ body }) => {
+          expect(body).toEqual({});
+        });
+    });
+  });
+  test("404: Responds with error if no comment with given id", () => {
+    return request(app)
+      .delete("/api/comments/4040")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("not found");
+      });
+  });
 });

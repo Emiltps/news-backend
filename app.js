@@ -17,6 +17,7 @@ const {
 const {
   getCommentsByArticleId,
   postCommentsByArticleId,
+  deleteCommentsbyCommentId,
 } = require("./controllers/comments.controller");
 
 app.use(express.json());
@@ -36,6 +37,8 @@ app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 app.post("/api/articles/:article_id/comments", postCommentsByArticleId);
 
 app.patch("/api/articles/:article_id", updateArticleVotesById);
+
+app.delete("/api/comments/:comment_id", deleteCommentsbyCommentId);
 
 app.use(handlePostgresErrors);
 

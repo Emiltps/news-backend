@@ -78,5 +78,9 @@
   "PATCH /api/articles/:article_id": {
     "description": "Updates an article by article_id.",
     "exampleResponse": { "inc_votes": 12 }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Delete a comment by comment_id.",
+    "exampleResponse": {}
   }
 }
