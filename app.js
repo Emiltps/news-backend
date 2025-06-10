@@ -29,9 +29,7 @@ app.get("/", (request, response) => {
 
 app.use(express.json());
 
-app.use(express.static("views"));
-
-app.get("/api", getEndpoints);
+app.use("/api", express.static("public"));
 
 app.get("/api/topics", getTopics);
 
