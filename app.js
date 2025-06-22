@@ -20,12 +20,12 @@ const {
   deleteCommentsbyCommentId,
 } = require("./controllers/comments.controller");
 
-const ejs = require("ejs");
-app.set("view engine", "ejs");
-app.set("views", "views");
-app.get("/", (request, response) => {
-  response.render("index");
-});
+// const ejs = require("ejs");
+// app.set("view engine", "ejs");
+// app.set("views", "views");
+// app.get("/", (request, response) => {
+//   response.render("index");
+// });
 
 app.use(express.json());
 
