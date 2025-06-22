@@ -29,7 +29,7 @@ const {
 
 app.use(express.json());
 
-app.get("/api/api", (req, res) => res.json({ message: "API working" }));
+app.get("/api", getEndpoints);
 
 app.get("/api/topics", getTopics);
 
