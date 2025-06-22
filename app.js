@@ -29,9 +29,7 @@ const {
 
 app.use(express.json());
 
-app.use("/", express.static("public", { index: "index.html" }));
-
-app.get("api/api", getEndpoints);
+app.get("/api/api", getEndpoints);
 
 app.get("/api/topics", getTopics);
 
@@ -48,6 +46,8 @@ app.post("/api/articles/:article_id/comments", postCommentsByArticleId);
 app.patch("/api/articles/:article_id", updateArticleVotesById);
 
 app.delete("/api/comments/:comment_id", deleteCommentsbyCommentId);
+
+app.use("/", express.static("public", { index: "index.html" }));
 
 app.use(handlePostgresErrors);
 
