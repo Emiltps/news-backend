@@ -29,7 +29,9 @@ const {
 
 app.use(express.json());
 
-app.use("/", express.static("public"));
+app.use("/", express.static("public", { index: "index.html" }));
+
+app.get("api/api", getEndpoints);
 
 app.get("/api/topics", getTopics);
 
