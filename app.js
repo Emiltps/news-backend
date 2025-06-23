@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const { getEndpoints } = require("./controllers/api.controller");
 const { getTopics } = require("./controllers/topics.controller");
 const {
@@ -19,6 +20,8 @@ const {
   postCommentsByArticleId,
   deleteCommentsbyCommentId,
 } = require("./controllers/comments.controller");
+
+app.use(cors());
 
 // const ejs = require("ejs");
 // app.set("view engine", "ejs");
